@@ -51,10 +51,10 @@
 
     <script>
       const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
-      console.log(labels);
-      labels.shift();
-      console.log(labels);
-      labels.push("pink");
+      // console.log(labels);
+      // labels.shift();
+      // console.log(labels);
+      // labels.push("pink");
       // shift: removes first value in array
       // unshift: adds at the beginning a value
       // pop: removes last value of the array
@@ -62,56 +62,53 @@
 
       // data block
       const data = {
-        // labels,
+        labels,
         datasets: [
+          // Multiple datasets are possible - that's an array
           {
-            label: "# of Votes",
-            // In scatter line charts, the data should be pairs of x and y coordinates
-            data: [
-              { x: 3, y: 12 },
-              { x: 6, y: 19 },
-              { x: 4.5, y: 3 },
-              { x: 1.5, y: 5 },
-              { x: 3.5, y: 2 },
-              { x: 3, y: 3 },
-            ],
+            label: "Red Votes",
             // data: [12, 19, 3, 5, 2, 3],
+            // x and y are the coordinates, r is the radius st
+            data: [
+              { x: 10, y: 6, r: 5 },
+              { x: 5, y: 7, r: 3 },
+              { x: 1, y: 3, r: 5 },
+              { x: 6, y: 5, r: 7 },
+              { x: 12, y: 1, r: 10 },
+              { x: 8, y: 3, r: 7 },
+            ],
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
 
-            backgroundColor: "rgba(54, 162, 235, 1)",
-            // [
-            //   "rgba(255, 99, 132, 0.2)",
-            //   "rgba(54, 162, 235, 0.2)",
-            //   "rgba(255, 206, 86, 0.2)",
-            //   "rgba(75, 192, 192, 0.2)",
-            //   "rgba(153, 102, 255, 0.2)",
-            //   "rgba(255, 159, 64, 0.2)",
-            // ],
-            borderColor: "rgba(54, 162, 235, 1)",
-            // [
-            //   "rgba(255, 99, 132, 1)",
-            //   "rgba(54, 162, 235, 1)",
-            //   "rgba(255, 206, 86, 1)",
-            //   "rgba(75, 192, 192, 1)",
-            //   "rgba(153, 102, 255, 1)",
-            //   "rgba(255, 159, 64, 1)",
-            // ],
+            borderColor: "rgba(255, 99, 132, 1)",
             borderWidth: 1,
-            // To display a line linking the dots
-            showLine: true,
-            // Reducing the line tension
-            tension: 0.4,
+          },
+          // Second dataset
+          {
+            label: "Blue Votes",
+            // data: [12, 19, 3, 5, 2, 3],
+            // x and y are the coordinates, r is the radius st
+            data: [
+              { x: 3, y: 5, r: 6 },
+              { x: 7, y: 2, r: 8 },
+              { x: 2, y: 1, r: 9 },
+              { x: 8, y: 8, r: 10 },
+              { x: 9, y: 6, r: 12 },
+              { x: 2, y: 5, r: 5 },
+            ],
+            backgroundColor: "rgba(54, 162, 235, 0.2)",
+
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1,
           },
         ],
       };
 
       // config block
       const config = {
-        type: "scatter",
+        type: "bubble",
         data: data,
         options: {
-          // Axes parameters
           scales: {
-            x: { beginAtZero: true },
             y: {
               beginAtZero: true,
             },
