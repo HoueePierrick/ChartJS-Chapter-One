@@ -46,9 +46,9 @@
         <canvas id="myChart"></canvas>
       </div>
     </div>
-
+    <!-- Imports of ChartJS ? -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <!-- Inside script, only JS code -->
     <script>
       const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
       // console.log(labels);
@@ -60,7 +60,7 @@
       // // pop: removes last value of the array
       // // push: adds a value at the end of the array
 
-      // data block
+      // data block - contained in config (see below)
       const data = {
         labels,
         datasets: [
@@ -130,9 +130,10 @@
         ],
       };
 
-      // config block
+      // config block - contained in myChart below
       const config = {
         type: "bar",
+        // Contains data - see up
         data: data,
         options: {
           scales: {
@@ -144,7 +145,13 @@
       };
 
       // init render block
-      const myChart = new Chart(document.getElementById("myChart"), config);
+      // renders the canvas that has the id myChart (can be modified)
+      const myChart = new Chart(
+        document.getElementById("myChart"),
+        // Contains the config (see over)
+        config
+      );
+      console.log(myChart);
     </script>
   </body>
 </html>
