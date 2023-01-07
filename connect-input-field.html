@@ -44,71 +44,25 @@
     <div class="chartCard">
       <div class="chartBox">
         <canvas id="myChart"></canvas>
+        <!-- Adding an input below -->
+        <input id="valueid" type="number" value="0" />
+        <input id="labelid" type="text" value="Default Label" />
+        <button onClick="addValue()">Add Value</button>
       </div>
     </div>
-    <!-- Imports of ChartJS ? -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Inside script, only JS code -->
+
     <script>
       const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
-      // console.log(labels);
-      // labels.shift();
-      // console.log(labels);
-      // labels.push("pink");
-      // // shift: removes first value in array
-      // // unshift: adds at the beginning a value
-      // // pop: removes last value of the array
-      // // push: adds a value at the end of the array
-
-      // data block - contained in config (see below)
+      const datapoints = [12, 19, 3, 5, 2, 3];
+      // data block
       const data = {
         labels,
         datasets: [
           {
             label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-            ],
-            borderWidth: 1,
-          },
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-            ],
-            borderWidth: 1,
-          },
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
+            data: datapoints,
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
               "rgba(54, 162, 235, 0.2)",
@@ -130,10 +84,9 @@
         ],
       };
 
-      // config block - contained in myChart below
+      // config block
       const config = {
         type: "bar",
-        // Contains data - see up
         data: data,
         options: {
           scales: {
@@ -145,13 +98,24 @@
       };
 
       // init render block
-      // renders the canvas that has the id myChart (can be modified)
       const myChart = new Chart(
+        // Targets the element id myChart (which is a canvas)
         document.getElementById("myChart"),
-        // Contains the config (see over)
         config
       );
-      console.log(myChart.config.data.datasets[1].label);
+      function addValue() {
+        const valueid = document.getElementById("valueid");
+        const labelid = document.getElementById("labelid");
+        console.log(valueid.value);
+        // ParseInt makes value readable
+        datapoints.push(parseInt(valueid.value));
+        console.log(datapoints);
+        labels.push(labelid.value);
+        // Updates the chart
+        myChart.config.data.datasets[0].data = datapoints;
+        myChart.config.data.labels = labels;
+        myChart.update();
+      }
     </script>
   </body>
 </html>
