@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chart.js, the Missing Manual</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1a1a1a;
+        color: rgba(75, 192, 192, 1);
+      }
+      .chartMenu p {
+        padding: 10px;
+        font-size: 20px;
+      }
+      .chartCard {
+        width: 100vw;
+        height: calc(100vh - 40px);
+        background: rgba(75, 192, 192, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .chartBox {
+        width: 700px;
+        padding: 20px;
+        border-radius: 20px;
+        border: solid 3px rgba(75, 192, 192, 1);
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chartMenu">
+      <p>Chart JS 3.7.0</p>
+    </div>
+    <div class="chartCard">
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
+
+      // data block
+      const data = {
+        // labels,
+        datasets: [
+          {
+            label: "# of Votes",
+            // data: [12, 19, 3, 5, 2, 3],
+            data: [
+              {
+                department: "Sales Department",
+                financials: { cost: 2000, budget: 2500 },
+              },
+              {
+                department: "Marketing Department",
+                financials: { cost: 10000, budget: 12500 },
+              },
+              {
+                department: "HR Department",
+                financials: { cost: 5000, budget: 6000 },
+              },
+              {
+                department: "IT Department",
+                financials: { cost: 9000, budget: 12000 },
+              },
+            ],
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1,
+          },
+        ],
+      };
+
+      // config block
+      const config = {
+        type: "bar",
+        data: data,
+        options: {
+          // Indicates the main axis (y means that the bar chart is horizontal)
+          indexAxis: "y",
+          // To parse complex data
+          parsing: {
+            // Indicates what's being used for denominations on the x / y axis
+            yAxisKey: "department",
+            xAxisKey: "financials.budget",
+          },
+          // scales: {
+          //   y: {
+          //     beginAtZero: true,
+          //   },
+          // },
+        },
+      };
+
+      // init render block
+      const myChart = new Chart(document.getElementById("myChart"), config);
+    </script>
+  </body>
+</html>
