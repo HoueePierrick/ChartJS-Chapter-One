@@ -86,8 +86,41 @@
         data: data,
         options: {
           scales: {
+            x: {
+              grid: {
+                color: (context) => {
+                  if (context.index === 3) {
+                    return "rgba(75, 192, 192, 1)";
+                  } else {
+                    return "rgba(0, 0, 0, 0.1)";
+                  }
+                },
+              },
+            },
             y: {
               beginAtZero: true,
+              // Coloring the gridline
+              grid: {
+                // Array will alternate colors
+                // color: ["rgba(0, 0, 0, 0.1)", "rgba(75, 192, 192, 1)"],
+                // ChartJS max number of gridlines is 11 (including the one at 0)
+                color: (context) => {
+                  // Gives the value of all ticks
+                  console.log(context.index);
+                  // Targetting 12
+                  // if (context.tick.value === 12) {
+                  //   return "rgba(75, 192, 192, 1)";
+                  // } else {
+                  //   return "rgba(0, 0, 0, 0.1)";
+                  // }
+                  // Targetting the 5th gridline (as 0th is 0)
+                  if (context.index === 5) {
+                    return "rgba(75, 192, 192, 1)";
+                  } else {
+                    return "rgba(0, 0, 0, 0.1)";
+                  }
+                },
+              },
             },
           },
         },

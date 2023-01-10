@@ -50,7 +50,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+      const color = "rgba(75, 192, 192, 1)";
+
       const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
+      console.log(labels);
+      labels.shift();
+      console.log(labels);
+      labels.push("pink");
+      // shift: removes first value in array
+      // unshift: adds at the beginning a value
+      // pop: removes last value of the array
+      // push: adds a value at the end of the array
 
       // data block
       const data = {
@@ -58,23 +68,17 @@
         datasets: [
           {
             label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
+            data: [
+              { x: 3, y: 3 },
+              { x: 6, y: 3 },
+              { x: 9, y: 4.5 },
+              { x: 12, y: 6 },
+              { x: 15, y: 6 },
+              { x: 9, y: 4.5 },
+              { x: 6, y: 3 },
             ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-            ],
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: color,
             borderWidth: 1,
           },
         ],
@@ -82,12 +86,24 @@
 
       // config block
       const config = {
-        type: "bar",
+        type: "scatter",
         data: data,
         options: {
           scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Total Sales",
+                color: color,
+              },
+            },
             y: {
               beginAtZero: true,
+              // Allowing for axis title display
+              title: {
+                display: true,
+                text: "Total Sales Agents",
+              },
             },
           },
         },

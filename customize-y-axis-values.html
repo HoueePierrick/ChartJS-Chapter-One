@@ -87,7 +87,14 @@
         options: {
           scales: {
             y: {
-              beginAtZero: true,
+              // beginAtZero: true,
+              // Defining the axis start and end value
+              min: 0,
+              max: 100,
+              // Positioning the ticks
+              ticks: {
+                stepSize: 30,
+              },
             },
           },
         },
