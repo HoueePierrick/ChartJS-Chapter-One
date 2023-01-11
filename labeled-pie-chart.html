@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chart.js, the Missing Manual</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1a1a1a;
+        color: rgba(75, 192, 192, 1);
+      }
+      .chartMenu p {
+        padding: 10px;
+        font-size: 20px;
+      }
+      .chartCard {
+        width: 100vw;
+        height: calc(100vh - 40px);
+        background: rgba(75, 192, 192, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .chartBox {
+        /* Lower width as the pie chart has a squared shape */
+        width: 400px;
+        padding: 20px;
+        border-radius: 20px;
+        border: solid 3px rgba(75, 192, 192, 1);
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chartMenu">
+      <p>Chart JS 3.7.0</p>
+    </div>
+    <div class="chartCard">
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Adding a plugin here // Bugs -->
+    <script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js
+    "></script>
+
+    <script>
+      const labels = ["Red 1", "Red 2", "Red 3", "Green"];
+
+      // data block
+      const data = {
+        labels,
+        datasets: [
+          {
+            label: "# of Votes",
+            data: [12, 19, 3, 5],
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(75, 192, 192, 1)",
+            ],
+            borderWidth: 1,
+            // Creating space between slices
+            // Apart from the last one
+            offset: [20, 20, 20, 0],
+          },
+        ],
+      };
+
+      // config block
+      const config = {
+        type: "pie",
+        data: data,
+        options: {},
+      };
+
+      // init render block
+      const myChart = new Chart(document.getElementById("myChart"), config);
+    </script>
+  </body>
+</html>
