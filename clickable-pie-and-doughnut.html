@@ -113,7 +113,29 @@
       const ctx = document.getElementById("myChart");
       const myChart = new Chart(ctx, config);
       function pieChartCanvas(click) {
-        console.log(click);
+        // console.log(click);
+        // Returns the data linked to slice clicked on
+        const clickedSlice = myChart.getElementsAtEventForMode(
+          click,
+          "nearest",
+          { intesect: true },
+          true
+        );
+        // console.log(points);
+        // clickedSlice.length === 0 if we click on an empty space
+        // clickedSlice[0] gets the slice data info
+        if (clickedSlice.length > 0) {
+          const pieSlice = clickedSlice[0];
+          // console.log(clickedSlice[0]);
+          // Returns the index of the data in the array
+          // console.log(clickedSlice[0].index);
+          // Getting the url link from the database
+          const link = myChart.data.datasets[0].data[clickedSlice[0].index].url;
+          // Would open the link on click - but on the same tab
+          // location.href = link;
+          // Opens link in a new tab
+          window.open(link);
+        }
       }
       // Action when clicked on canvas
       ctx.onclick = pieChartCanvas;
