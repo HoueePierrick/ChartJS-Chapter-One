@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chart.js, the Missing Manual</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1a1a1a;
+        color: rgba(75, 192, 192, 1);
+      }
+      .chartMenu p {
+        padding: 10px;
+        font-size: 20px;
+      }
+      .chartCard {
+        width: 100vw;
+        height: calc(100vh - 40px);
+        background: rgba(75, 192, 192, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .chartBox {
+        /* 500px width as pie and doughnut are squarish */
+        width: 500px;
+        padding: 20px;
+        border-radius: 20px;
+        border: solid 3px rgba(75, 192, 192, 1);
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chartMenu">
+      <p>Chart JS 3.7.0</p>
+    </div>
+    <div class="chartCard">
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const labels = ["Sales", "Cost", "Profit"];
+
+      // data block
+      const data = {
+        labels,
+        datasets: [
+          {
+            label: "# of Votes",
+            data: [
+              {
+                financials: "Sales",
+                url: "https://www.google.com",
+                amount: { usd: 900, eur: 600 },
+              },
+              {
+                financials: "Cost",
+                url: "https://www.chartjs.org",
+                amount: { usd: 600, eur: 450 },
+              },
+              {
+                financials: "Profitt",
+                url: "https://www.amazon.com",
+                amount: { usd: 450, eur: 300 },
+              },
+            ],
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      };
+
+      // config block
+      const config = {
+        type: "pie",
+        data: data,
+        options: {
+          parsing: {
+            key: "amount.usd",
+          },
+        },
+      };
+
+      // init render block
+      // ctx selects the canvas on which we are making the chart
+      const ctx = document.getElementById("myChart");
+      const myChart = new Chart(ctx, config);
+      function pieChartCanvas(click) {
+        console.log(click);
+      }
+      // Action when clicked on canvas
+      ctx.onclick = pieChartCanvas;
+    </script>
+  </body>
+</html>
