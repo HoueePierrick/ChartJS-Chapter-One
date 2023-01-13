@@ -46,8 +46,8 @@
         <canvas id="myChart"></canvas>
         <!-- Creating the buttons -->
         <!-- On click, trigger the weekData function -->
-        <button onClick="weekData(-6, -6)">Previous</button>
-        <button onClick="weekData(6, 6)">Next</button>
+        <button id="previousButton" onClick="weekData(-6, -6)">Previous</button>
+        <button id="nextButton" onClick="weekData(6, 6)">Next</button>
       </div>
     </div>
 
@@ -118,7 +118,31 @@
       const myChart = new Chart(document.getElementById("myChart"), config);
 
       function weekData(start, end) {
-        const startScale = 0;
+        const startScale = myChart.config.options.scales.x.min + start;
+        const endScale = myChart.config.options.scales.x.max + end;
+        // Defining the buttons (targeting them)
+        const previousButton = document.getElementById("previousButton");
+        const nextButton = document.getElementById("nextButton");
+        // console.log(startScale);
+        // console.log(endScale);
+        myChart.config.options.scales.x.min = startScale;
+        myChart.config.options.scales.x.max = endScale;
+        previousButton.disabled = false;
+        nextButton.disabled = false;
+
+        // Forbidding to go before week1 and over week 52
+        if (startScale < 0) {
+          myChart.config.options.scales.x.min = 0;
+          myChart.config.options.scales.x.max = 6;
+          // Disabling the "previous" button
+          previousButton.disabled = true;
+        } else if (endScale > week.length) {
+          myChart.config.options.scales.x.min = week.length - 6;
+          myChart.config.options.scales.x.max = week.length;
+          nextButton.disabled = true;
+        }
+
+        myChart.update();
       }
     </script>
   </body>
