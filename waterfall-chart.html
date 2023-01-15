@@ -50,7 +50,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-      const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
+      const labels = [
+        "red",
+        "blue",
+        "yellow",
+        "green",
+        "purple",
+        "orange",
+        "black",
+      ];
 
       // data block
       const data = {
@@ -66,23 +74,11 @@
               [5, 2],
               [2, 3],
               [3, 9],
+              [9, 15],
             ],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)",
-            ],
+            // Function to automatically adapt color in function of the data
+            backgroundColor: barBackgroundColorCode(),
+            borderColor: barColorCode(),
             borderWidth: 1,
             // Don't understand
             borderSkipped: false,
@@ -90,21 +86,92 @@
         ],
       };
 
+      // Plugin to draw linking lines
+      const waterfallLines = {
+        id: "waterfallLines",
+        beforeDraw(chart, args, options) {
+          // Destructuring the chart
+          const {
+            ctx,
+            config,
+            scales: { x, y },
+          } = chart;
+        },
+      };
+
       // config block
       const config = {
         type: "bar",
         data: data,
         options: {
+          plugins: {
+            tooltip: {
+              // Disabling the tooltip
+              enabled: false,
+            },
+          },
           scales: {
             y: {
               beginAtZero: true,
             },
           },
         },
+        // Allowing to have linking ligns
+        plugins: [waterfallLines],
       };
 
       // init render block
       const myChart = new Chart(document.getElementById("myChart"), config);
+
+      function barColorCode() {
+        return (ctx) => {
+          // ctx.parsed._custom.start gets start value
+          const start = ctx.parsed._custom.start;
+          // ctx.parsed._custom.end gets start value
+          const end = ctx.parsed._custom.end;
+          let barColor =
+            start <= end
+              ? "rgba(75, 192, 192, 1)"
+              : start > end
+              ? "rgba(255, 99, 132, 1)"
+              : "rgba(0, 0, 0, 1)";
+          // Putting the first and last columns in black
+          // ctx.chart.config.data.datasets[0].data.length - 1
+          // Gives us the index of the last element of the dataset
+          if (
+            ctx.dataIndex === 0 ||
+            ctx.dataIndex === ctx.chart.config.data.datasets[0].data.length - 1
+          ) {
+            barColor = "rgba(0, 0, 0, 1)";
+          }
+          return barColor;
+        };
+      }
+
+      function barBackgroundColorCode() {
+        return (ctx) => {
+          // ctx.parsed._custom.start gets start value
+          const start = ctx.parsed._custom.start;
+          // ctx.parsed._custom.end gets start value
+          const end = ctx.parsed._custom.end;
+          let barColor =
+            start <= end
+              ? "rgba(75, 192, 192, 0.2)"
+              : start > end
+              ? "rgba(255, 99, 132, 0.2)"
+              : "rgba(0, 0, 0, 0.2)";
+          // Putting the first and last columns in black
+          // ctx.chart.config.data.datasets[0].data.length - 1
+          // Gives us the index of the last element of the dataset
+          if (
+            ctx.dataIndex === 0 ||
+            ctx.dataIndex === ctx.chart.config.data.datasets[0].data.length - 1
+          ) {
+            barColor = "rgba(0, 0, 0, 0.2)";
+          }
+          return barColor;
+        };
+      }
     </script>
   </body>
 </html>
