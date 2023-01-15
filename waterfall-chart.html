@@ -96,6 +96,18 @@
             config,
             scales: { x, y },
           } = chart;
+          const aze = config._config.data.datasets[0].data[0][0];
+          const az = config._config.data.datasets[0].data[0][1];
+
+          // Saves all the coordinates
+          ctx.save();
+          // Defining the color of the line
+          ctx.strokeStyle = "black";
+          // Defining the coordinates of the rectangle
+          // x0 horizontal start, y0 vertical start (in pixels)
+          // x1 the width, y1 the heigth (in pixels)
+          // ctx.strokeRect(x0, y0, x1, y1)
+          ctx.strokeRect();
         },
       };
 
