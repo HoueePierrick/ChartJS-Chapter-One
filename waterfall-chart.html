@@ -115,7 +115,10 @@
             // Saves all the coordinates
             ctx.save();
             // Defining the color of the line from the options (in config)
-            ctx.strokeStyle = options.lineColor;
+            const lineStyle = myChart.config.options.plugins.waterfall;
+            ctx.strokeStyle = lineStyle.lineColor;
+            // Making the line dotted
+            ctx.setLineDash([lineStyle.lineStyle1, lineStyle.lineStyle2]);
             // Defining the coordinates of the rectangle
             // x0 horizontal start, y0 vertical start (in pixels)
             // x1 the width, y1 the heigth (in pixels)
@@ -144,8 +147,10 @@
         options: {
           plugins: {
             // Defining the linking lines' style
-            waterfallLines: {
+            waterfall: {
               lineColor: "black",
+              lineStyle1: 5,
+              lineStyle2: 5,
             },
             tooltip: {
               // Disabling the tooltip
