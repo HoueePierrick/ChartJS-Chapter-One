@@ -58,6 +58,7 @@
         "purple",
         "orange",
         "black",
+        "next color",
       ];
 
       // data block
@@ -75,6 +76,7 @@
               [2, 3],
               [3, 9],
               [9, 15],
+              [15, 10],
             ],
             // Function to automatically adapt color in function of the data
             backgroundColor: barBackgroundColorCode(),
@@ -96,18 +98,42 @@
             config,
             scales: { x, y },
           } = chart;
-          const aze = config._config.data.datasets[0].data[0][0];
-          const az = config._config.data.datasets[0].data[0][1];
 
-          // Saves all the coordinates
-          ctx.save();
-          // Defining the color of the line
-          ctx.strokeStyle = "black";
-          // Defining the coordinates of the rectangle
-          // x0 horizontal start, y0 vertical start (in pixels)
-          // x1 the width, y1 the heigth (in pixels)
-          // ctx.strokeRect(x0, y0, x1, y1)
-          ctx.strokeRect();
+          // Making it on all the data
+          for (
+            let i = 0;
+            i < config._config.data.datasets[0].data.length - 1;
+            i++
+          ) {
+            // config._config.data.datasets[0].data[0][0]
+            // Gives the value of the first point of the bar
+            // config._config.data.datasets[0].data[0][1];
+            // Gives the value of the end point of the bar
+            const aze = config._config.data.datasets[0].data[i][0];
+            const az = config._config.data.datasets[0].data[i][1];
+
+            // Saves all the coordinates
+            ctx.save();
+            // Defining the color of the line from the options (in config)
+            ctx.strokeStyle = options.lineColor;
+            // Defining the coordinates of the rectangle
+            // x0 horizontal start, y0 vertical start (in pixels)
+            // x1 the width, y1 the heigth (in pixels)
+            // ctx.strokeRect(x0, y0, x1, y1)
+            // y.getPixelForValue(10) will give the px coordinates
+            // for the selected value on the vertical axis
+            // x values in bar chart are the data indexes (starting from 0)
+            columnWidth = x.getPixelForValue(1) - x.getPixelForValue(0);
+            bartoBarWidth =
+              x.getPixelForValue(i + 1.35) - x.getPixelForValue(i - 0.35);
+            ctx.strokeRect(
+              // Default bar takes 70% of column
+              x.getPixelForValue(i - 0.35),
+              y.getPixelForValue(az),
+              bartoBarWidth,
+              0
+            );
+          }
         },
       };
 
@@ -117,6 +143,10 @@
         data: data,
         options: {
           plugins: {
+            // Defining the linking lines' style
+            waterfallLines: {
+              lineColor: "black",
+            },
             tooltip: {
               // Disabling the tooltip
               enabled: false,
