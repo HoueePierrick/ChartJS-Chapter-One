@@ -48,6 +48,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- // Importing Data Labels plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
     <script>
       const labels = [
@@ -146,6 +148,16 @@
         data: data,
         options: {
           plugins: {
+            // Defining data labels' style
+            datalabels: {
+              formatter: (value) => {
+                // value gets the data small arrays
+                const votes = value[1] - value[0];
+                // Having only positive values
+                const netVotes = Math.abs(votes);
+                return `Votes: ${netVotes}`;
+              },
+            },
             // Defining the linking lines' style
             waterfall: {
               lineColor: "black",
@@ -164,7 +176,8 @@
           },
         },
         // Allowing to have linking ligns
-        plugins: [waterfallLines],
+        // Importing Data Labels plugin
+        plugins: [waterfallLines, ChartDataLabels],
       };
 
       // init render block
