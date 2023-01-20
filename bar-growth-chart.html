@@ -123,6 +123,9 @@
           //   10
           // );
 
+          console.log(chart._metasets[1].hidden);
+          // if() {}
+
           for (let i = 0; i < deltaPercentage.length; i++) {
             // Gets the y coordinates at the beginning of the 1st growth arrow
             const start = chart._metasets[1]._parsed[i]._custom.start;
@@ -148,8 +151,50 @@
               );
               ctx.fillStyle = "black";
               ctx.fill();
+              ctx.restore();
+
+              // Text content
+              ctx.font = "10px Arial";
+              ctx.fillStyle = "green";
+              ctx.textAlign = "center";
+              // ctx.fillText("20.0%", x, y);
+              ctx.fillText(
+                `${deltaPercentage[i]}%`,
+                chart.getDatasetMeta(1).data[i].x + 2.5,
+                chart.getDatasetMeta(1).data[i].y - 10
+              );
+              ctx.restore();
             } else {
-              console.log("Negative");
+              ctx.beginPath();
+              ctx.moveTo(
+                chart.getDatasetMeta(1).data[i].x,
+                // Y coordinates are those of the next red bar
+                chart.getDatasetMeta(0).data[i + 1].y + 3
+              );
+              ctx.lineTo(
+                chart.getDatasetMeta(1).data[i].x - 5,
+                chart.getDatasetMeta(0).data[i + 1].y - 5
+              );
+              ctx.lineTo(
+                chart.getDatasetMeta(1).data[i].x + 5,
+                chart.getDatasetMeta(0).data[i + 1].y - 5
+              );
+              ctx.fillStyle = "black";
+              ctx.fill();
+              // To be able to take other actions
+              ctx.restore();
+
+              // Text content
+              ctx.font = "10px Arial";
+              ctx.fillStyle = "red";
+              ctx.textAlign = "center";
+              // ctx.fillText("20.0%", x, y);
+              ctx.fillText(
+                `${deltaPercentage[i]}%`,
+                chart.getDatasetMeta(1).data[i].x + 2.5,
+                chart.getDatasetMeta(0).data[i + 1].y + 12
+              );
+              ctx.restore();
             }
           }
         },
@@ -171,6 +216,8 @@
           },
           scales: {
             y: {
+              // Grace insures that the text doesn't go above the top bar
+              grace: "5%",
               beginAtZero: true,
             },
           },
