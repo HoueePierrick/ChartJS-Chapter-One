@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chart.js, the Missing Manual</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1a1a1a;
+        color: rgba(75, 192, 192, 1);
+      }
+      .chartMenu p {
+        padding: 10px;
+        font-size: 20px;
+      }
+      .chartCard {
+        width: 100vw;
+        height: calc(100vh - 40px);
+        background: rgba(75, 192, 192, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .chartBox {
+        width: 700px;
+        padding: 20px;
+        border-radius: 20px;
+        border: solid 3px rgba(75, 192, 192, 1);
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chartMenu">
+      <p>Chart JS 3.7.0</p>
+    </div>
+    <div class="chartCard">
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const browserData = [
+        {
+          browser: "Chrome",
+          color: "rgba(75, 192, 192, 1)",
+          users: 150,
+          marketshare: 70,
+          versionData: [
+            { version: "v5", users: 10 },
+            { version: "v6", users: 20 },
+            { version: "v7", users: 30 },
+            { version: "v8", users: 60 },
+            { version: "v9", users: 20 },
+          ],
+        },
+        {
+          browser: "FireFox",
+          color: "rgba(255, 26, 104, 1)",
+          users: 25,
+          marketshare: 24,
+          versionData: [
+            { version: "V3.1", users: 10 },
+            { version: "v3.2", users: 10 },
+            { version: "v3.3", users: 5 },
+          ],
+        },
+        {
+          browser: "Safari",
+          color: "rgba(54, 162, 235, 1)",
+          users: 30,
+          marketshare: 26,
+          versionData: [
+            { version: "Web 9", users: 10 },
+            { version: "Web 10", users: 10 },
+            { version: "Web 11", users: 10 },
+          ],
+        },
+      ];
+
+      const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
+
+      // data block
+      const data = {
+        // labels,
+        datasets: [
+          {
+            label: "Browser data market share",
+            data: browserData,
+            backgroundColor: [
+              browserData[0].color,
+              browserData[1].color,
+              browserData[2].color,
+            ],
+            borderColor: [
+              browserData[0].color,
+              browserData[1].color,
+              browserData[2].color,
+            ],
+            borderWidth: 1,
+          },
+        ],
+      };
+
+      // config block
+      const config = {
+        type: "bar",
+        data: data,
+        options: {
+          onHover: (event, chartElement) => {
+            // Target the cursor style on hovering
+            // console.log(event.native.target.style.cursor);
+            event.native.target.style.cursor = chartElement[0]
+              ? "pointer"
+              : "default";
+          },
+          // Making browser data readable
+          parsing: {
+            xAxisKey: "browser",
+            yAxisKey: "marketshare",
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      };
+
+      // init render block
+      const ctx = document.getElementById("myChart");
+      const myChart = new Chart(ctx, config);
+
+      function clickHandler(click) {
+        const bar = myChart.getElementsAtEventForMode(
+          click,
+          "nearest",
+          {
+            intersect: true,
+          },
+          true
+        );
+        // bar tells what happens when clicking on the bar
+        // console.log(bar);
+        if (bar[0]) {
+          // Returns which column is clicked
+          // console.log(bar[0].index);
+          changeChart(bar[0].index);
+        }
+      }
+
+      function changeChart(value) {
+        console.log(value + " grabbed from the ClickHandler");
+      }
+
+      ctx.onclick = clickHandler;
+    </script>
+  </body>
+</html>

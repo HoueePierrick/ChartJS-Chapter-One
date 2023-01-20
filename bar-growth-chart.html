@@ -123,78 +123,79 @@
           //   10
           // );
 
-          console.log(chart._metasets[1].hidden);
-          // if() {}
+          // Tells if dataset should be hidden (true if hidden, null or false else)
+          // console.log(chart._metasets[1].hidden);
+          if (!chart._metasets[1].hidden) {
+            for (let i = 0; i < deltaPercentage.length; i++) {
+              // Gets the y coordinates at the beginning of the 1st growth arrow
+              const start = chart._metasets[1]._parsed[i]._custom.start;
+              // Gets the y coordinates at the end of the 1st growth arrow
+              const end = chart._metasets[1]._parsed[i]._custom.end;
 
-          for (let i = 0; i < deltaPercentage.length; i++) {
-            // Gets the y coordinates at the beginning of the 1st growth arrow
-            const start = chart._metasets[1]._parsed[i]._custom.start;
-            // Gets the y coordinates at the end of the 1st growth arrow
-            const end = chart._metasets[1]._parsed[i]._custom.end;
+              if (end >= start) {
+                // Triangle
+                ctx.beginPath();
+                // Is the center coordinates
+                ctx.moveTo(
+                  chart.getDatasetMeta(1).data[i].x,
+                  chart.getDatasetMeta(1).data[i].y - 2
+                );
+                // Outer lines
+                ctx.lineTo(
+                  chart.getDatasetMeta(1).data[i].x - 5,
+                  chart.getDatasetMeta(1).data[i].y + 5
+                );
+                ctx.lineTo(
+                  chart.getDatasetMeta(1).data[i].x + 5,
+                  chart.getDatasetMeta(1).data[i].y + 5
+                );
+                ctx.fillStyle = "black";
+                ctx.fill();
+                ctx.restore();
 
-            if (end >= start) {
-              // Triangle
-              ctx.beginPath();
-              // Is the center coordinates
-              ctx.moveTo(
-                chart.getDatasetMeta(1).data[i].x,
-                chart.getDatasetMeta(1).data[i].y - 2
-              );
-              // Outer lines
-              ctx.lineTo(
-                chart.getDatasetMeta(1).data[i].x - 5,
-                chart.getDatasetMeta(1).data[i].y + 5
-              );
-              ctx.lineTo(
-                chart.getDatasetMeta(1).data[i].x + 5,
-                chart.getDatasetMeta(1).data[i].y + 5
-              );
-              ctx.fillStyle = "black";
-              ctx.fill();
-              ctx.restore();
+                // Text content
+                ctx.font = "10px Arial";
+                ctx.fillStyle = "green";
+                ctx.textAlign = "center";
+                // ctx.fillText("20.0%", x, y);
+                ctx.fillText(
+                  `${deltaPercentage[i]}%`,
+                  chart.getDatasetMeta(1).data[i].x + 2.5,
+                  chart.getDatasetMeta(1).data[i].y - 10
+                );
+                ctx.restore();
+              } else {
+                ctx.beginPath();
+                ctx.moveTo(
+                  chart.getDatasetMeta(1).data[i].x,
+                  // Y coordinates are those of the next red bar
+                  chart.getDatasetMeta(0).data[i + 1].y + 3
+                );
+                ctx.lineTo(
+                  chart.getDatasetMeta(1).data[i].x - 5,
+                  chart.getDatasetMeta(0).data[i + 1].y - 5
+                );
+                ctx.lineTo(
+                  chart.getDatasetMeta(1).data[i].x + 5,
+                  chart.getDatasetMeta(0).data[i + 1].y - 5
+                );
+                ctx.fillStyle = "black";
+                ctx.fill();
+                // To be able to take other actions
+                ctx.restore();
 
-              // Text content
-              ctx.font = "10px Arial";
-              ctx.fillStyle = "green";
-              ctx.textAlign = "center";
-              // ctx.fillText("20.0%", x, y);
-              ctx.fillText(
-                `${deltaPercentage[i]}%`,
-                chart.getDatasetMeta(1).data[i].x + 2.5,
-                chart.getDatasetMeta(1).data[i].y - 10
-              );
-              ctx.restore();
-            } else {
-              ctx.beginPath();
-              ctx.moveTo(
-                chart.getDatasetMeta(1).data[i].x,
-                // Y coordinates are those of the next red bar
-                chart.getDatasetMeta(0).data[i + 1].y + 3
-              );
-              ctx.lineTo(
-                chart.getDatasetMeta(1).data[i].x - 5,
-                chart.getDatasetMeta(0).data[i + 1].y - 5
-              );
-              ctx.lineTo(
-                chart.getDatasetMeta(1).data[i].x + 5,
-                chart.getDatasetMeta(0).data[i + 1].y - 5
-              );
-              ctx.fillStyle = "black";
-              ctx.fill();
-              // To be able to take other actions
-              ctx.restore();
-
-              // Text content
-              ctx.font = "10px Arial";
-              ctx.fillStyle = "red";
-              ctx.textAlign = "center";
-              // ctx.fillText("20.0%", x, y);
-              ctx.fillText(
-                `${deltaPercentage[i]}%`,
-                chart.getDatasetMeta(1).data[i].x + 2.5,
-                chart.getDatasetMeta(0).data[i + 1].y + 12
-              );
-              ctx.restore();
+                // Text content
+                ctx.font = "10px Arial";
+                ctx.fillStyle = "red";
+                ctx.textAlign = "center";
+                // ctx.fillText("20.0%", x, y);
+                ctx.fillText(
+                  `${deltaPercentage[i]}%`,
+                  chart.getDatasetMeta(1).data[i].x + 2.5,
+                  chart.getDatasetMeta(0).data[i + 1].y + 12
+                );
+                ctx.restore();
+              }
             }
           }
         },
