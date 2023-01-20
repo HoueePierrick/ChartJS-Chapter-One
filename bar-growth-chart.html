@@ -111,18 +111,46 @@
           }
 
           // Creating the black triangles
-          console.log(chart.getDatasetMeta(1).data[0].x);
+          // Aligns the shape left with the arrow left
+          // console.log(chart.getDatasetMeta(1).data[0].x);
+          // Aligns the shape top with the arrow top
+          // console.log(chart.getDatasetMeta(1).data[0].y);
           ctx.fillStyle = "black";
-          ctx.fillRect(10, 10, 10, 10);
+          // ctx.fillRect(
+          //   chart.getDatasetMeta(1).data[0].x,
+          //   chart.getDatasetMeta(1).data[0].y,
+          //   10,
+          //   10
+          // );
 
-          // Gets the y coordinates at the beginning of the 1st growth arrow
-          const start = chart._metasets[1]._parsed[0]._custom.start;
-          // Gets the y coordinates at the end of the 1st growth arrow
-          const end = chart._metasets[1]._parsed[0]._custom.end;
-          if (end >= start) {
-            console.log("Positive");
-          } else {
-            console.log("Negative");
+          for (let i = 0; i < deltaPercentage.length; i++) {
+            // Gets the y coordinates at the beginning of the 1st growth arrow
+            const start = chart._metasets[1]._parsed[i]._custom.start;
+            // Gets the y coordinates at the end of the 1st growth arrow
+            const end = chart._metasets[1]._parsed[i]._custom.end;
+
+            if (end >= start) {
+              // Triangle
+              ctx.beginPath();
+              // Is the center coordinates
+              ctx.moveTo(
+                chart.getDatasetMeta(1).data[i].x,
+                chart.getDatasetMeta(1).data[i].y - 2
+              );
+              // Outer lines
+              ctx.lineTo(
+                chart.getDatasetMeta(1).data[i].x - 5,
+                chart.getDatasetMeta(1).data[i].y + 5
+              );
+              ctx.lineTo(
+                chart.getDatasetMeta(1).data[i].x + 5,
+                chart.getDatasetMeta(1).data[i].y + 5
+              );
+              ctx.fillStyle = "black";
+              ctx.fill();
+            } else {
+              console.log("Negative");
+            }
           }
         },
       };
