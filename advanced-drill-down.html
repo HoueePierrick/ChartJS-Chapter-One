@@ -118,11 +118,20 @@
         data: data,
         options: {
           onHover: (event, chartElement) => {
-            // Target the cursor style on hovering
-            // console.log(event.native.target.style.cursor);
-            event.native.target.style.cursor = chartElement[0]
-              ? "pointer"
-              : "default";
+            // Targetting the initial chart
+            if (
+              myChart.config.data.datasets[0].label ===
+              "Browser data market share"
+            ) {
+              // Target the cursor style on hovering
+              // console.log(event.native.target.style.cursor);
+              event.native.target.style.cursor = chartElement[0]
+                ? "pointer"
+                : "default";
+            } else {
+              // In drilled-down charts
+              event.native.target.style.cursor = "default";
+            }
           },
           // Making browser data readable
           parsing: {
@@ -141,26 +150,50 @@
       const ctx = document.getElementById("myChart");
       const myChart = new Chart(ctx, config);
 
-      function clickHandler(click) {
-        const bar = myChart.getElementsAtEventForMode(
-          click,
-          "nearest",
-          {
-            intersect: true,
-          },
-          true
-        );
-        // bar tells what happens when clicking on the bar
-        // console.log(bar);
-        if (bar[0]) {
-          // Returns which column is clicked
-          // console.log(bar[0].index);
-          changeChart(bar[0].index);
-        }
+      function changeChart(browser) {
+        // Grabbs the column index
+        // console.log(browser + " grabbed from the ClickHandler");
+        // Reviewing the parsing
+        myChart.config.options.parsing.xAxisKey = "versionData.version";
+        myChart.config.options.parsing.yAxisKey = "versionData.users";
+
+        const vColor = [];
+        const vUsers = [];
+        const vLabel = browserData[browser].versionData.map((e, i) => {
+          vUsers.push(e.users);
+          vColor.push(browserData[browser].color);
+          return e.version;
+        });
+
+        myChart.config.data.datasets[0].label = browserData[browser].browser;
+        myChart.config.data.labels = vLabel;
+        myChart.config.data.datasets[0].data = vUsers;
+        myChart.config.data.datasets[0].backgroundColor = vColor;
+        myChart.config.data.datasets[0].borderColor = vColor;
+        myChart.update();
       }
 
-      function changeChart(value) {
-        console.log(value + " grabbed from the ClickHandler");
+      function clickHandler(click) {
+        // Only targeting initial graph
+        if (
+          myChart.config.data.datasets[0].label === "Browser data market share"
+        ) {
+          const bar = myChart.getElementsAtEventForMode(
+            click,
+            "nearest",
+            {
+              intersect: true,
+            },
+            true
+          );
+          // bar tells what happens when clicking on the bar
+          // console.log(bar);
+          if (bar[0]) {
+            // Returns which column is clicked
+            // console.log(bar[0].index);
+            changeChart(bar[0].index);
+          }
+        }
       }
 
       ctx.onclick = clickHandler;
