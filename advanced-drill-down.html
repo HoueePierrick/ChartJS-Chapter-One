@@ -112,6 +112,47 @@
         ],
       };
 
+      // resetButton block = plugin to come back to the main chart
+      const resetButton = {
+        id: "resetButton",
+        // Draws the button first, and then anything else
+        beforeDraw(chart, args, options) {
+          // Destructuring
+          const {
+            ctx,
+            // Getting the dimensions of the chart area
+            chartArea: { top, bottom, left, right, width, height },
+          } = chart;
+          ctx.save();
+
+          const text = "Back";
+          const thickBorder = 3;
+
+          // Measuring the button's text width
+          const textWidth = ctx.measureText(text).width;
+
+          // Background color should be there before text, as it's a first layer
+          ctx.fillStyle = "rgba(75, 192, 192, 0.2)";
+          ctx.fillRect(right - textWidth - 2, 5, textWidth, 20);
+
+          // text
+          ctx.fillStyle = "#666";
+          ctx.font = "12px Arial";
+          // ctx.fillText(text, x, y);
+          ctx.fillText(text, right - textWidth - 2, 15);
+
+          // Border of the button
+          // Ctx refers to the canvas we're drawing in
+          // Border width
+          ctx.lineWidth = thickBorder;
+          // Border style
+          ctx.strokeStyle = "rgba(75, 192, 192, 1)";
+          // Defining the rectangular shape of the button
+          // ctx.strokeRect(x0 left, y0 top, x1 width, y1 height);
+          ctx.strokeRect(right - textWidth - 2, 5, textWidth, 20);
+        },
+      };
+
       // config block
       const config = {
         type: "bar",
@@ -144,6 +185,8 @@
             },
           },
         },
+        // Adding a plugin
+        plugins: [resetButton],
       };
 
       // init render block
