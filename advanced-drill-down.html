@@ -50,6 +50,16 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+      const coordinates = {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+      };
+
+      // Console log as a table
+      // console.table(coordinates);
+
       const browserData = [
         {
           browser: "Chrome",
@@ -130,16 +140,24 @@
 
           // Measuring the button's text width
           const textWidth = ctx.measureText(text).width;
+          // Defining a padding
+          const padding = 10;
+          const paddingRight = padding / 2;
 
           // Background color should be there before text, as it's a first layer
           ctx.fillStyle = "rgba(75, 192, 192, 0.2)";
-          ctx.fillRect(right - textWidth - 2, 5, textWidth, 20);
+          ctx.fillRect(
+            right - textWidth - 2 - padding,
+            5,
+            textWidth + padding,
+            20
+          );
 
           // text
           ctx.fillStyle = "#666";
           ctx.font = "12px Arial";
           // ctx.fillText(text, x, y);
-          ctx.fillText(text, right - textWidth - 2, 15);
+          ctx.fillText(text, right - textWidth - 2 - paddingRight, 15);
 
           // Border of the button
           // Ctx refers to the canvas we're drawing in
@@ -149,7 +167,19 @@
           ctx.strokeStyle = "rgba(75, 192, 192, 1)";
           // Defining the rectangular shape of the button
           // ctx.strokeRect(x0 left, y0 top, x1 width, y1 height);
-          ctx.strokeRect(right - textWidth - 2, 5, textWidth, 20);
+          ctx.strokeRect(
+            right - textWidth - 2 - padding,
+            5,
+            textWidth + padding,
+            20
+          );
+
+          coordinates.top = 5 - thickBorder;
+          coordinates.bottom = 5 + 20 + thickBorder;
+          coordinates.left = right - textWidth - 2 - padding - thickBorder;
+          coordinates.right = right;
+
+          ctx.restore();
         },
       };
 
@@ -240,6 +270,29 @@
       }
 
       ctx.onclick = clickHandler;
+
+      function mouseMoveHandler(canvas, mousemove) {
+        // Collecting the mouse coordinates
+        const x = mousemove.offsetX;
+        const y = mousemove.offsetY;
+
+        if (
+          x > coordinates.left &&
+          x < coordinates.right &&
+          y > coordinates.top &&
+          y < coordinates.bottom
+        ) {
+          canvas.style.cursor = "pointer";
+        } else {
+          canvas.style.cursor = "default";
+        }
+      }
+
+      // Mousemove counts each time the mouse is moving over the canvas
+      // Mouseover counts each time the mouse enters the canvas
+      ctx.addEventListener("mousemove", (e) => {
+        mouseMoveHandler(ctx, e);
+      });
     </script>
   </body>
 </html>
