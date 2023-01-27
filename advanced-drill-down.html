@@ -29,7 +29,7 @@
         justify-content: center;
       }
       .chartBox {
-        width: 700px;
+        width: 60%;
         padding: 20px;
         border-radius: 20px;
         border: solid 3px rgba(75, 192, 192, 1);
@@ -345,10 +345,14 @@
       // Mousemove counts each time the mouse is moving over the canvas
       // Mouseover counts each time the mouse enters the canvas
       ctx.addEventListener("mousemove", (e) => {
+        // Allow to adapt for evolving canvas size (responsive)
+        myChart.resize();
         mouseMoveHandler(ctx, e);
       });
       // Managing clicks on the button
       ctx.addEventListener("click", (e) => {
+        // Allow to adapt for evolving canvas size (responsive)
+        myChart.resize();
         clickButtonHandler(ctx, e);
       });
     </script>

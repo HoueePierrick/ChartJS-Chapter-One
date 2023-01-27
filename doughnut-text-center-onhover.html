@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chart.js, the Missing Manual</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1a1a1a;
+        color: rgba(75, 192, 192, 1);
+      }
+      .chartMenu p {
+        padding: 10px;
+        font-size: 20px;
+      }
+      .chartCard {
+        width: 100vw;
+        height: calc(100vh - 40px);
+        background: rgba(75, 192, 192, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .chartBox {
+        /* Lower width to make it squarish as doughnut */
+        width: 400px;
+        padding: 20px;
+        border-radius: 20px;
+        border: solid 3px rgba(75, 192, 192, 1);
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chartMenu">
+      <p>Chart JS 3.7.0</p>
+    </div>
+    <div class="chartCard">
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
+
+      // data block
+      const data = {
+        labels,
+        datasets: [
+          {
+            label: "# of Votes",
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+            // Reducing the ring size
+            cutout: "90%",
+          },
+        ],
+      };
+
+      // hoverLabels plugin block
+      const hoverLabels = {
+        id: "hoverLabels",
+        afterDraw(chart, args, options) {
+          // chart destructuring
+          const {
+            ctx,
+            chartArea: { top, bottom, left, right, width, height },
+          } = chart;
+          ctx.save();
+          // chart._active shows the slice of the doughnut that's hovered on
+          // Condition that a slice of the doughnut is hovered on
+          if (chart._active[0]) {
+            // chart._active[0].datasetIndex gives the dataset index of the slice hovered on
+            // chart._active[0].index gives the dataset index of the slice hovered on
+            // chart.config.data.labels gives the labels of the slices
+            const textLabel = chart.config.data.labels[chart._active[0].index];
+            const dataLabel =
+              chart.config.data.datasets[chart._active[0].datasetIndex].data[
+                chart._active[0].index
+              ];
+            // Height and width are only those of the chart area
+            // They exclude the lengend, so top > 0
+            ctx.font = "bolder 60px Arial";
+            ctx.fillStyle = "blue";
+            // Aligning the test in the center
+            ctx.textAlign = "center";
+            // ctx.fillText("Hello Test", xLeft, xTOP);
+            // 60/2 is font size divided by 2
+            ctx.fillText(
+              `$${textLabel}: ${dataLabel}`,
+              width / 2,
+              height / 2 + top + 60 / 2
+            );
+          }
+        },
+      };
+
+      // config block
+      const config = {
+        type: "doughnut",
+        data: data,
+        options: {
+          plugins: {
+            // Hiding the legend
+            legend: {
+              display: false,
+            },
+          },
+          scales: {},
+        },
+        plugins: [hoverLabels],
+      };
+
+      // init render block
+      const myChart = new Chart(document.getElementById("myChart"), config);
+    </script>
+  </body>
+</html>
