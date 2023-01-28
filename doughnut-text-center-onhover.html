@@ -104,10 +104,14 @@
               chart.config.data.datasets[chart._active[0].datasetIndex].data[
                 chart._active[0].index
               ];
+            // Getting the slice border color
+            const color =
+              chart.config.data.datasets[chart._active[0].datasetIndex]
+                .borderColor[chart._active[0].index];
             // Height and width are only those of the chart area
             // They exclude the lengend, so top > 0
             ctx.font = "bolder 60px Arial";
-            ctx.fillStyle = "blue";
+            ctx.fillStyle = color;
             // Aligning the test in the center
             ctx.textAlign = "center";
             // ctx.fillText("Hello Test", xLeft, xTOP);
@@ -118,6 +122,8 @@
               height / 2 + top + 60 / 2
             );
           }
+          // Enabling to make new settings for further new plugins
+          ctx.restore();
         },
       };
 
