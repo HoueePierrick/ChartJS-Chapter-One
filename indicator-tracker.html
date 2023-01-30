@@ -90,22 +90,27 @@
           } = chart;
           // Saving all the above variables
           ctx.save();
-          // Starting point of the drawing
-          ctx.beginPath();
-          // Width and color of the line
-          ctx.lineWidth = 3;
-          ctx.strokeStyle = "rgba(255, 99, 132, 1)";
-          // Position of the plugin
-          // ctx.moveTo(x, y);
-          ctx.moveTo(10, 10);
-          // Drawing of the line (if same y coordinates as moveTo, the line is horizontal)
-          ctx.lineTo(100, 10);
-          // Implementing it (drawing it)
-          ctx.stroke();
-          // Ending the operation
-          ctx.closePath();
-          // Saving it
-          ctx.restore();
+          drawLines(12, "rgba(255, 99, 132, 1)");
+          drawLines(4, "rgba(255, 206, 86, 1)");
+          function drawLines(yValue, color) {
+            // Starting point of the drawing
+            ctx.beginPath();
+            // Width and color of the line
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = color;
+            // Position of the plugin
+            // ctx.moveTo(x, y);
+            // y.getPixelForValue(12) will get the y coordinates for a 12 value
+            ctx.moveTo(left, y.getPixelForValue(yValue));
+            // Drawing of the line (if same y coordinates as moveTo, the line is horizontal)
+            ctx.lineTo(right, y.getPixelForValue(yValue));
+            // Implementing it (drawing it)
+            ctx.stroke();
+            // Ending the operation
+            ctx.closePath();
+            // Saving it
+            ctx.restore();
+          }
         },
       };
 
