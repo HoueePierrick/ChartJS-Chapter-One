@@ -44,6 +44,12 @@
     <div class="chartCard">
       <div class="chartBox">
         <canvas id="myChart"></canvas>
+        <button onClick="addAValue(this)" value="20">Danger zone</button>
+        <button onClick="addAValue(this)" value="7">Success zone</button>
+        <button onClick="addAValue(this)" value="1">Reset zone</button>
+      </div>
+      <div class="chartBox">
+        <p>Status: <span id="status">...</span></p>
       </div>
     </div>
 
@@ -111,6 +117,7 @@
             // Saving it
             ctx.restore();
           }
+          tracker();
         },
       };
 
@@ -131,6 +138,32 @@
 
       // init render block
       const myChart = new Chart(document.getElementById("myChart"), config);
+
+      //
+      function tracker() {
+        // Gets the data array
+        const datapoints = myChart.data.datasets[0].data;
+        // Getting / targetting the span with id = "status"
+        const status = document.getElementById("status");
+        if (datapoints[datapoints.length - 1] > 12) {
+          status.innerText = "Danger";
+          status.style.color = "rgba(255, 99, 132, 1)";
+        } else if (datapoints[datapoints.length - 1] < 4) {
+          status.innerText = "Please restart system";
+          status.style.color = "rgba(255, 206, 86, 1)";
+        } else {
+          status.innerText = "Success";
+          status.style.color = "black";
+        }
+      }
+      tracker();
+
+      function addAValue(element) {
+        // element.value gets the element value;
+        myChart.data.datasets[0].data.push(element.value);
+        myChart.data.labels.push("New Value");
+        myChart.update();
+      }
     </script>
   </body>
 </html>
