@@ -97,15 +97,48 @@
       const myChart = new Chart(document.getElementById("myChart"), config);
 
       function crosshair(chart, mousemove) {
-        console.log(mousemove);
+        // Getting coordinates of the cursor over the chart
+        const xCoor = mousemove.offsetX;
+        const yCoor = mousemove.offsetY;
+        const {
+          ctx,
+          chartArea: { top, bottom, left, right, width, height },
+          scales: { x, y },
+        } = chart;
+
+        // Drawing
+        ctx.strokeStyle = "rgba(102,102,102,1)";
+        ctx.lineWidth = 2;
+        // To have it independant frow any other element from the chart
+        // ctx.beginPath();
+        // // Indicating the starting dot of the shape
+        // // ctx.moveTo(x, y);
+        // ctx.moveTo(left, yCoor);
+        // // Next point (in line)
+        // // ctx.lineTo(x, y);
+        // ctx.lineTo(right, yCoor);
+        // // Printing the line
+        // ctx.stroke();
+        // // Ends the drawing operation
+        // ctx.closePath();
+
+        // To have it independant frow any other element from the chart
+        ctx.beginPath();
+        // Indicating the starting dot of the shape
+        // ctx.moveTo(x, y);
+        ctx.moveTo(xCoor, top);
+        // Next point (in line)
+        // ctx.lineTo(x, y);
+        ctx.lineTo(xCoor, bottom);
+        // Printing the line
+        ctx.stroke();
+        // Ends the drawing operation
+        ctx.closePath();
       }
 
       // event listener to trigger a function while hovering on chart
       myChart.canvas.addEventListener("mousemove", (e) => {
         crosshair(myChart, e);
-        // Getting coordinates of the cursor over the chart
-        const xCoor = mousemove.offsetX;
-        const yCoor = mousemove.offsetY;
       });
     </script>
   </body>
