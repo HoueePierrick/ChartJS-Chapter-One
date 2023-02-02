@@ -172,43 +172,41 @@
           // // Ends the drawing operation
           // ctx.closePath();
 
-          // => LEFT RECTANGLE
-          // Adding value indicators
-          // Color
-          ctx.fillStyle = "rgba(102,102,102,1)";
-          // Make shape independant
           ctx.beginPath();
-          // Drawaing a rectangle
-          // Grabbing the y value based on coordinates
-          const labelText = y.getValueForPixel(yCoor).toFixed(2);
-          // Default font-size of 12
-          const LABEL_HEIGHT_TWO = 24;
-          ctx.fillRect(xCoor - 25 / 2, bottom, 25, LABEL_HEIGHT_TWO);
-          // Freing for the drawing of a new shape
-          ctx.restore();
-          ctx.textAlign = "center";
-          // Vertical align
-          ctx.textBaseline = "middle";
-          ctx.font = "bold 12px sans-serif";
-          ctx.fillStyle = "white";
-          ctx.fillText(labelText, left / 2, yCoor);
-          // Freing for the drawing of a new text
+          const LABEL_HEIGHT = 24;
+          ctx.fillStyle = "rgba(102, 102, 102, 1)";
+          ctx.fillRect(0, yCoor - LABEL_HEIGHT / 2, left, LABEL_HEIGHT);
           ctx.restore();
 
-          // => BOTTOM RECTANGLE
-          ctx.beginPath();
-          const labelTextTwo = x.getValueForPixel(xCoor);
-          const LABEL_HEIGHT = 24;
-          ctx.fillRect(0, yCoor - LABEL_HEIGHT / 2, left, LABEL_HEIGHT);
-          // Freing for the drawing of a new shape
-          ctx.restore();
-          ctx.textAlign = "center";
-          // Vertical align
-          ctx.textBaseline = "middle";
+          const labelText = y.getValueForPixel(yCoor);
           ctx.font = "bold 12px sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
           ctx.fillStyle = "white";
-          ctx.fillText(labelTextTwo, xCoor, bottom + LABEL_HEIGHT / 2);
-          // Freing for the drawing of a new text
+          ctx.fillText(labelText.toFixed(2), left / 2, yCoor);
+          ctx.restore();
+
+          // bottom rect
+          const bottomLabel = data.labels[x.getValueForPixel(xCoor)];
+          const bottomLabelWidth = ctx.measureText(bottomLabel).width + 12;
+          console.log(bottomLabelWidth);
+          ctx.beginPath();
+          //const LABEL_HEIGHT = 24;
+          ctx.fillStyle = "rgba(102, 102, 102, 1)";
+          ctx.fillRect(
+            xCoor - bottomLabelWidth / 2,
+            bottom,
+            bottomLabelWidth,
+            LABEL_HEIGHT
+          );
+          ctx.restore();
+
+          // bottom text
+          ctx.font = "bold 12px sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "white";
+          ctx.fillText(bottomLabel, xCoor, bottom + LABEL_HEIGHT / 2);
           ctx.restore();
         }
       }
