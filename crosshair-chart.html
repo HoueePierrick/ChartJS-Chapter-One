@@ -75,16 +75,32 @@
               "rgba(153, 102, 255, 1)",
               "rgba(255, 159, 64, 1)",
             ],
-            borderWidth: 1,
+            // Avoiding having a point
+            // Removes the triggering effect
+            hitRadius: 0,
+            // Set point size to 0
+            pointRadius: 0,
           },
         ],
       };
 
       // config block
       const config = {
-        type: "bar",
+        type: "line",
         data: data,
         options: {
+          layout: {
+            // Adding a padding left on the chart
+            padding: {
+              left: 12,
+            },
+          },
+          plugins: {
+            // Diasabling the tooltip
+            tooltip: {
+              enabled: false,
+            },
+          },
           scales: {
             y: {
               beginAtZero: true,
@@ -97,6 +113,8 @@
       const myChart = new Chart(document.getElementById("myChart"), config);
 
       function crosshair(chart, mousemove) {
+        // Avoiding having all the lines drawn (reset for each mouse move)
+        chart.update("none");
         // Getting coordinates of the cursor over the chart
         const xCoor = mousemove.offsetX;
         const yCoor = mousemove.offsetY;
@@ -106,34 +124,93 @@
           scales: { x, y },
         } = chart;
 
-        // Drawing
-        ctx.strokeStyle = "rgba(102,102,102,1)";
-        ctx.lineWidth = 2;
-        // To have it independant frow any other element from the chart
-        // ctx.beginPath();
-        // // Indicating the starting dot of the shape
-        // // ctx.moveTo(x, y);
-        // ctx.moveTo(left, yCoor);
-        // // Next point (in line)
-        // // ctx.lineTo(x, y);
-        // ctx.lineTo(right, yCoor);
-        // // Printing the line
-        // ctx.stroke();
-        // // Ends the drawing operation
-        // ctx.closePath();
+        // Saving all variables above
+        ctx.save();
 
-        // To have it independant frow any other element from the chart
-        ctx.beginPath();
-        // Indicating the starting dot of the shape
-        // ctx.moveTo(x, y);
-        ctx.moveTo(xCoor, top);
-        // Next point (in line)
-        // ctx.lineTo(x, y);
-        ctx.lineTo(xCoor, bottom);
-        // Printing the line
-        ctx.stroke();
-        // Ends the drawing operation
-        ctx.closePath();
+        // Requiring that we're in the chart area
+        if (
+          xCoor >= left &&
+          xCoor <= right &&
+          yCoor >= top &&
+          yCoor <= bottom
+        ) {
+          lines(left, yCoor, right, yCoor);
+          lines(xCoor, top, xCoor, bottom);
+          function lines(xStart, yStart, xEnd, yEnd) {
+            // Drawing
+            ctx.strokeStyle = "rgba(102,102,102,1)";
+            ctx.lineWidth = 2;
+            // To have it independant frow any other element from the chart
+            ctx.beginPath();
+            // Indicating the starting dot of the shape
+            // ctx.moveTo(x, y);
+            ctx.moveTo(xStart, yStart);
+            // Next point (in line)
+            // ctx.lineTo(x, y);
+            ctx.lineTo(xEnd, yEnd);
+            // Dashed line
+            ctx.setLineDash([6, 6]);
+            // Printing the line
+            ctx.stroke();
+            // Ends the drawing operation
+            ctx.closePath();
+            // To correct for a bug on the chart
+            ctx.restore();
+            ctx.setLineDash([]);
+          }
+
+          // To have it independant frow any other element from the chart
+          // ctx.beginPath();
+          // // Indicating the starting dot of the shape
+          // // ctx.moveTo(x, y);
+          // ctx.moveTo(xCoor, top);
+          // // Next point (in line)
+          // // ctx.lineTo(x, y);
+          // ctx.lineTo(xCoor, bottom);
+          // // Printing the line
+          // ctx.stroke();
+          // // Ends the drawing operation
+          // ctx.closePath();
+
+          // => LEFT RECTANGLE
+          // Adding value indicators
+          // Color
+          ctx.fillStyle = "rgba(102,102,102,1)";
+          // Make shape independant
+          ctx.beginPath();
+          // Drawaing a rectangle
+          // Grabbing the y value based on coordinates
+          const labelText = y.getValueForPixel(yCoor).toFixed(2);
+          // Default font-size of 12
+          const LABEL_HEIGHT_TWO = 24;
+          ctx.fillRect(xCoor - 25 / 2, bottom, 25, LABEL_HEIGHT_TWO);
+          // Freing for the drawing of a new shape
+          ctx.restore();
+          ctx.textAlign = "center";
+          // Vertical align
+          ctx.textBaseline = "middle";
+          ctx.font = "bold 12px sans-serif";
+          ctx.fillStyle = "white";
+          ctx.fillText(labelText, left / 2, yCoor);
+          // Freing for the drawing of a new text
+          ctx.restore();
+
+          // => BOTTOM RECTANGLE
+          ctx.beginPath();
+          const labelTextTwo = x.getValueForPixel(xCoor);
+          const LABEL_HEIGHT = 24;
+          ctx.fillRect(0, yCoor - LABEL_HEIGHT / 2, left, LABEL_HEIGHT);
+          // Freing for the drawing of a new shape
+          ctx.restore();
+          ctx.textAlign = "center";
+          // Vertical align
+          ctx.textBaseline = "middle";
+          ctx.font = "bold 12px sans-serif";
+          ctx.fillStyle = "white";
+          ctx.fillText(labelTextTwo, xCoor, bottom + LABEL_HEIGHT / 2);
+          // Freing for the drawing of a new text
+          ctx.restore();
+        }
       }
 
       // event listener to trigger a function while hovering on chart
