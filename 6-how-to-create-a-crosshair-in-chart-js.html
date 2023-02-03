@@ -49,10 +49,13 @@
   
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+
     <script>
     // data block
     const data = {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: [new Date('2022-06-01').setHours(0, 0, 0, 0), new Date('2022-06-02').setHours(0, 0, 0, 0), new Date('2022-06-03').setHours(0, 0, 0, 0), new Date('2022-06-04').setHours(0, 0, 0, 0), new Date('2022-06-05').setHours(0, 0, 0, 0), new Date('2022-06-06').setHours(0, 0, 0, 0)],
       datasets: [{
         label: '# of Votes',
         data: [12, 19, 3, 5, 2, 3],
@@ -93,6 +96,12 @@
           }
         },
         scales: {
+          x: {
+            type: 'time',
+            time: {
+              unit: 'day'
+            }
+          },
           y: {
             beginAtZero: true
           }
@@ -149,7 +158,10 @@
         ctx.restore();
 
         // bottom rect
-        const bottomLabel = data.labels[x.getValueForPixel(xCoor)];
+        const bottomLabel = new Date(x.getValueForPixel(xCoor)).toLocaleString('en-US', {
+          day: 'numeric',
+          month: 'long'
+        });
         const bottomLabelWidth = ctx.measureText(bottomLabel).width + 12;
         console.log(bottomLabelWidth);
         ctx.beginPath();

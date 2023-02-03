@@ -48,13 +48,23 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Adapter to work with dates -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
     <script>
-      const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
+      // const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
 
       // data block
       const data = {
-        labels,
+        labels: [
+          // date.setHours(h, min, s, ms)
+          new Date("2022-06-01").setHours(0, 0, 0, 0),
+          new Date("2022-06-02").setHours(0, 0, 0, 0),
+          new Date("2022-06-03").setHours(0, 0, 0, 0),
+          new Date("2022-06-04").setHours(0, 0, 0, 0),
+          new Date("2022-06-05").setHours(0, 0, 0, 0),
+          new Date("2022-06-06").setHours(0, 0, 0, 0),
+        ],
         datasets: [
           {
             label: "# of Votes",
@@ -102,6 +112,12 @@
             },
           },
           scales: {
+            // Converting x scale to dates
+            x: {
+              type: "time",
+              // With a day unit
+              time: { unit: "day" },
+            },
             y: {
               beginAtZero: true,
             },
@@ -187,9 +203,11 @@
           ctx.restore();
 
           // bottom rect
-          const bottomLabel = data.labels[x.getValueForPixel(xCoor)];
+          const bottomLabel = new Date(
+            x.getValueForPixel(xCoor)
+          ).toLocaleString("fr-FR", { day: "numeric", month: "short" });
           const bottomLabelWidth = ctx.measureText(bottomLabel).width + 12;
-          console.log(bottomLabelWidth);
+          // console.log(bottomLabelWidth);
           ctx.beginPath();
           //const LABEL_HEIGHT = 24;
           ctx.fillStyle = "rgba(102, 102, 102, 1)";
