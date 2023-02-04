@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chart.js, the Missing Manual</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1a1a1a;
+        color: rgba(75, 192, 192, 1);
+      }
+      .chartMenu p {
+        padding: 10px;
+        font-size: 20px;
+      }
+      .chartCard {
+        width: 100vw;
+        height: calc(100vh - 40px);
+        background: rgba(75, 192, 192, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .chartBox {
+        width: 80%;
+        padding: 20px;
+        border-radius: 20px;
+        border: solid 3px rgba(75, 192, 192, 1);
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chartMenu">
+      <p>Chart JS 3.7.0</p>
+    </div>
+    <div class="chartCard">
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      const labels = ["red", "blue", "yellow", "green", "purple", "orange"];
+
+      // data block
+      const data = {
+        labels,
+        datasets: [
+          {
+            label: "# of Votes",
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+              "rgba(75, 192, 192, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+            ],
+            // Removing the border, but keeping the color in memory
+            borderWidth: 0,
+            // For bars to occupy only 10% of their space
+            barPercentage: 0.1,
+            // Have borders at the end and start of each bar
+            borderSkipped: false,
+            // Rounded shape at the ends of the bars
+            borderRadius: 10,
+            categoryPercentage: 0.8,
+          },
+        ],
+      };
+
+      // roundedProgressBar plugin block
+      const roundedProgressBar = {
+        id: "roundedProgressBar",
+        beforeDatasetsDraw(chart, args, pluginOptions) {
+          const {
+            ctx,
+            data,
+            chartArea: { top, bottom, left, right, width, height },
+            scales: { x, y },
+          } = chart;
+          // Saving these variables
+          ctx.save();
+
+          const segmentHeight = height / data.labels.length;
+          // console.log(segmentHeight);
+          // console.log(chart.getDatasetMeta(0));
+
+          chart.getDatasetMeta(0).data.forEach((datapoint, index) => {
+            // console.log(datapoint.y);
+            // Positionning the bars on the y axis
+            datapoint.y = top + segmentHeight * (index + 0.9);
+            // console.log(datapoint.options.backgroundColor);
+            // Background shadow effect
+            // Shape being independant from any other shape
+            ctx.beginPath();
+            ctx.strokeStyle = datapoint.options.borderColor;
+            ctx.fillStyle = datapoint.options.borderColor;
+            // Rounded border
+            ctx.lineJoin = "round";
+            ctx.lineWidth = datapoint.height;
+            // Coordinates and dimensions
+            ctx.strokeRect(
+              left + datapoint.height / 2,
+              datapoint.y,
+              width - datapoint.height,
+              1
+            );
+          });
+        },
+      };
+
+      // config block
+      const config = {
+        type: "bar",
+        data: data,
+        options: {
+          // Having it horizontal
+          indexAxis: "y",
+          plugins: {
+            // Hiding the legend
+            legend: {
+              display: false,
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+        plugins: [roundedProgressBar],
+      };
+
+      // init render block
+      const myChart = new Chart(document.getElementById("myChart"), config);
+    </script>
+  </body>
+</html>
