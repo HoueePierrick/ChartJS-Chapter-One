@@ -111,13 +111,21 @@
             datapoint.y = top + segmentHeight * (index + 0.9);
             // console.log(datapoint.options.backgroundColor);
             // Text label
-            ctx.font = "12 sans-serif";
+            ctx.font = "bold 15px sans-serif";
             ctx.fillStyle = "rgba(102,102,102,1)";
             // ctx.fillText(data.labels[index], x, y);
             // Positionning the text in the center
             ctx.textBaseline = "middle";
+            ctx.textAlign = "left";
             ctx.fillText(data.labels[index], left, datapoint.y - 15);
+
             // Text value
+            ctx.font = "bold 15px sans-serif";
+            ctx.fillStyle = datapoint.options.backgroundColor;
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "right";
+            ctx.fillText(data.datasets[0].data[index], right, datapoint.y - 15);
+            ctx.restore();
 
             // Background shadow effect
             // Shape being independant from any other shape
@@ -152,8 +160,31 @@
             },
           },
           scales: {
+            x: {
+              beginAtZero: true,
+              grid: {
+                // Removing the y grid
+                display: false,
+                // Removing the border grid
+                drawBorder: false,
+              },
+              // Removing the ticks
+              ticks: {
+                display: false,
+              },
+            },
             y: {
               beginAtZero: true,
+              grid: {
+                // Removing the y grid
+                display: false,
+                // Removing the border grid
+                drawBorder: false,
+              },
+              // Removing the ticks
+              ticks: {
+                display: false,
+              },
             },
           },
         },
