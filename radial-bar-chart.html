@@ -59,8 +59,8 @@
           {
             label: "Red",
             data: [15],
-            backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-            borderColor: ["rgba(255, 99, 132, 1)"],
+            backgroundColor: ["rgba(255, 99, 132, 1)"],
+            borderColor: ["white"],
             borderWidth: 1,
             // Having a x degrees circle (incomplete)
             circumference: (ctx) => {
@@ -81,8 +81,8 @@
           {
             label: "Blue",
             data: [30],
-            backgroundColor: ["rgba(54, 162, 235, 0.2)"],
-            borderColor: ["rgba(54, 162, 235, 1)"],
+            backgroundColor: ["rgba(54, 162, 235, 1)"],
+            borderColor: ["white"],
             borderWidth: 1,
             // Having a x degrees circle (incomplete)
             circumference: (ctx) => {
@@ -103,8 +103,8 @@
           {
             label: "Yellow",
             data: [3],
-            backgroundColor: ["rgba(255, 159, 64, 0.2)"],
-            borderColor: ["rgba(255, 159, 64, 1)"],
+            backgroundColor: ["rgba(255, 159, 64, 1)"],
+            borderColor: ["white"],
             borderWidth: 1,
             // Having a x degrees circle (incomplete)
             // Having a x degrees circle (incomplete)
@@ -126,11 +126,46 @@
         ],
       };
 
+      // barLabels plugin block
+      const barLabels = {
+        id: "barLabels",
+        beforeDatasetsDraw(chart, args, pluginOptions) {
+          const { ctx, data } = chart;
+          // Saving all variables
+          ctx.save();
+          // Getting the circle data
+          // console.log(chart.getDatasetMeta(0).data[0]);
+          ctx.font = "bold 12px sans-serif";
+          // Pushing the text to the left
+          ctx.textAlign = "right";
+          // Text aligns vertically in the middle
+          ctx.textBaseline = "middle";
+          for (let i = 0; i < data.datasets.length; i++) {
+            const xCoor = chart.getDatasetMeta(i).data[0].x;
+            const yCoor = chart.getDatasetMeta(i).data[0].y;
+            const innerRadius = chart.getDatasetMeta(i).data[0].innerRadius;
+            const outerRadius = chart.getDatasetMeta(i).data[0].outerRadius;
+            const thickness = outerRadius - innerRadius;
+            ctx.fillStyle = data.datasets[i].backgroundColor;
+            // ctx.fillText(text, x, y);
+            ctx.fillText(
+              data.datasets[i].label,
+              xCoor - 5,
+              yCoor - innerRadius - thickness / 2
+            );
+          }
+        },
+      };
+
       // config block
       const config = {
         type: "doughnut",
         data: data,
         options: {
+          // Applying a border radius of 10px on all shapes
+          borderRadius: 10,
+          // Reducing shape size
+          cutout: "85%",
           plugins: {
             // Hiding the legend
             legend: {
@@ -139,6 +174,7 @@
           },
           scales: {},
         },
+        plugins: [barLabels],
       };
 
       // init render block
