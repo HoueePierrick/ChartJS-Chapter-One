@@ -76,7 +76,7 @@
               "rgba(255, 159, 64, 1)",
             ],
             borderWidth: 1,
-            barPercentage: 0.8,
+            barPercentage: 0.5,
             categoryPercentage: 0.9,
           },
         ],
@@ -87,14 +87,32 @@
         id: "verticalBackground",
         beforeDatasetsDraw(chart, args, plugins) {
           const {
+            data,
             chartArea: { top, bottom, left, right, width, height },
             ctx,
             scales: { x, y },
           } = chart;
+          const barPercentage = data.datasets[0].barPercentage;
+          const categoryPercentage = data.datasets[0].categoryPercentage;
+          const displayDataPoints = y.max - y.min + 1 || data.labels.length;
+          const barWidth =
+            (width / displayDataPoints) *
+            (barPercentage ? barPercentage : 0.9) *
+            (categoryPercentage ? categoryPercentage : 0.8);
+          const barHeight =
+            (height / displayDataPoints) *
+            (barPercentage ? barPercentage : 0.9) *
+            (categoryPercentage ? categoryPercentage : 0.8);
           ctx.save();
-          // ctx.fillRectangle(x, y, w, h)
-          const xCoor = x.getPixelForValue(0);
-          ctx.fillRect(xCoor, top, 10, height);
+          ctx.fillStyle = plugins.barBackground || "lightgray";
+          for (let i = y.min; i <= displayDataPoints; i++) {}
+          data.labels.forEach((label, index) => {
+            // ctx.fillRectangle(x, y, w, h)
+            // const xCoor = x.getPixelForValue(index);
+            // ctx.fillRect(xCoor - barWidth / 2, top, barWidth, height);
+            const yCoor = y.getPixelForValue(index);
+            ctx.fillRect(left, yCoor - barHeight / 2, width, barHeight);
+          });
         },
       };
 
@@ -103,9 +121,20 @@
         type: "bar",
         data: data,
         options: {
+          // Making an horizontal bar chart
+          indexAxis: "y",
           scales: {
             y: {
+              // Min and max values to the y axis (index)
+              min: 1,
+              max: 4,
               beginAtZero: true,
+            },
+          },
+          plugins: {
+            // Determining options of the plugins (here verticalBackground)
+            verticalBackground: {
+              // barBackground: "black",
             },
           },
         },
