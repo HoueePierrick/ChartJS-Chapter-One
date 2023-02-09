@@ -1,1 +1,42 @@
-TO DO = FAIRE DU REFERENCEMENT
+# Sommaire du contenu
+
+- advanced-drill-down: is a clickable bar chart (to drill down)
+- bar-growth-chart: is a bar chart with an arrow to show difference % between each bar
+- bar-line-combo-chart: is a bar chart with a curve in behind
+- bubble-chart: is a bubble chart
+- change-line-color: is a curve chart with buttons to change the curve color
+- chartjs-missing-manual: is the basic bar chart
+- chartjs-starter: is a modified bar chart (useless)
+- clickable-pie-and-doughnut: is a pie chart with a clickable link behind each slice
+- color-single-gridline: is a bar chart with one coloured gridline
+- connect-input-field: is a bar chart in which we can add values
+- crosshair-chart: is a straight curve chart
+- customize-tooltip-labels: is a basic bar chart with custom tooltip
+- customize-y-axis-values: is a bar chart with custom values on the y axis
+- data-structures: is a horizontal bar chart
+- dotted-dashed-line: is a curve chart with a dotted part (useless)
+- doughnut-text-center-onhover: is a doughnut chart with text showing in the middle on hover
+- doughnut-text-middle: is a doughnut chart with static text in the middle (useless)
+- floating-range-bar-chart: bar chart to track durations for instance (calendar)
+- horizontal-bar-chart: is a modified horizontal bar chart (useless)
+- indicator-tracker: is a curve chart with indicator lines with alert messages
+- labeled-pie-chart: is a pie chart with spaces between slices
+- line-chart: is a line chart
+- line-segment-styling: is a line chart with dotted parts (useless)
+- narrow-rounded-doughnut: is a dynamic doughnut chart
+- no-data-block: is a bar chart with "no-data" placeholder blocks
+- onhover-pie-chart: is a pie chart
+- overlapping-bar-chart: is two overlapping bar charts
+- polar-chart: is a polar chart
+- previous-next-button: is a bar chart with previous and next buttons
+- progress-bar-chart: is a progress bar chart
+- radar-chart: is a radar chart
+- radial-bar-chart: is a radial bar chart
+- remove-space-between-bars: is a trippled bar chart
+- rounded-stacked-bar-chart: is a tripled-on-top bar chart
+- scales-titles: bubble bar chart (useless)
+- scatter-line-chart: is a curve linking weird points together
+- select-values: is a trippled bar chart (useless)
+- track-behind-bar-char: is a bar chart with progress track behind
+- understanding-chart-area: is a bar chart (useless)
+- waterfall-chart: is a waterfall chart
